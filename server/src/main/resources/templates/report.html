@@ -1,0 +1,16 @@
+{{>header}}
+{{>navbar}}
+
+<body>
+    <script>var reportId={{reportId}}</script>
+    <script src="report-updater.js"></script>
+
+    <h1>Report</h1>
+    <p>Id: {{reportId}}</p>
+    <p>Progress: <span id="progress">0%</span></p>
+    <p>Completed: <span id="completed"></span></p>
+
+    <button onclick="window.location.href='/';">Go home</button>
+</body>
+
+{{>footer}}

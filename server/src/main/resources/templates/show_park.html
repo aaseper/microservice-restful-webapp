@@ -1,0 +1,57 @@
+{{>header}}
+{{>navbar}}
+
+<body>
+    <h2>{{park.name}}</h2>
+
+    <h3>Eolopark information</h3>
+    <p>City: {{park.city}}</p>
+    <p>Latitude: {{park.latitude}}</p>
+    <p>Longitude: {{park.longitude}}</p>
+    <p>Area: {{park.area}}</p>
+    <p>Terrain type: {{park.terrainType}}</p>
+    <br>
+
+    <h3>Substation</h3>
+    <p>Model: {{park.substation.model}}</p>
+    <p>Power: {{park.substation.power}}</p>
+    <p>Voltage: {{park.substation.voltage}}</p>
+    <br>
+
+    <h3>Aerogenerators</h3>
+    <ul>
+        {{#park.aerogenerators}}
+        <li>
+            {{#.}}
+            {{.}}
+            <button onclick="window.location.href='/parks/{{park.id}}/aerogenerators/{{id}}/edit';">Edit aerogenerator
+            </button>
+            <button onclick="window.location.href='/parks/{{park.id}}/aerogenerators/{{id}}/delete';">Remove
+                aerogenerator
+            </button>
+            {{/.}}
+        </li>
+        <br>
+        {{/park.aerogenerators}}
+    </ul>
+    <ul>
+        <li>
+            <button onclick="window.location.href='/parks/{{park.id}}/aerogenerators/new';">Add new aerogenerator
+            </button>
+        </li>
+    </ul>
+    <br>
+    <br>
+
+    <button onclick="window.location.href='/parks/{{park.id}}/edit';">Edit eolopark</button>
+    <br>
+    <br>
+
+    <button onclick="window.location.href='/parks/{{park.id}}/delete';">Remove eolopark</button>
+    <br>
+    <br>
+
+    <button onclick="window.location.href='/';">Go back</button>
+</body>
+
+{{>footer}}

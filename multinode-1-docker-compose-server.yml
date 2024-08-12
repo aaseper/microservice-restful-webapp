@@ -1,0 +1,42 @@
+version: '3'
+services:
+  server:
+    image: ${IMAGE_USERNAME}/server:${IMAGE_VERSION}
+    container_name: server
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+  mysql:
+    image: mysql:8.0-debian
+    container_name: database
+    volumes:
+      - ./db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_DATABASE=${DB_NAME}
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping',
+             '-h', 'localhost', '-u$$MYSQL_USER', '-p$$MYSQL_ROOT_PASSWORD' ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  rabbitmq:
+    image: rabbitmq:3.9.11-management-alpine
+    container_name: broker
+    ports:
+      - "5672:5672"
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  db-data:
+name: 'server'

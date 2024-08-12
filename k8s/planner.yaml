@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: planner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: planner
+  template:
+    metadata:
+      labels:
+        app: planner
+    spec:
+      containers:
+      - name: planner
+        image: aaseper/planner:v1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: planner
+spec:
+  type: ClusterIP
+  selector:
+    app: planner
+  ports:
+  - port: 49152
+---

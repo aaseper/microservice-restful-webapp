@@ -1,0 +1,65 @@
+{
+  "info": {
+    "_postman_id": "80bcdd18-cf9c-4ff7-8843-3d18326f9748",
+    "name": "EoloparkManager_GeoService",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "32641687",
+    "_collection_link": "https://eoloparkmanager.postman.co/workspace/Team-Workspace~372ef3dd-92f6-4160-87a6-447fb3f61427/collection/32641687-80bcdd18-cf9c-4ff7-8843-3d18326f9748?action=share&source=collection_link&creator=32641687"
+  },
+  "item": [
+    {
+      "name": "Get GeoData from a known city",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8008/api/geoservice/?cityName=Ceuta",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8008",
+          "path": [
+            "api",
+            "geoservice",
+            ""
+          ],
+          "query": [
+            {
+              "key": "cityName",
+              "value": "Ceuta"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get GeoData from an unknown city",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8008/api/geoservice/?cityName=Unknown",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8008",
+          "path": [
+            "api",
+            "geoservice",
+            ""
+          ],
+          "query": [
+            {
+              "key": "cityName",
+              "value": "Unknown"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

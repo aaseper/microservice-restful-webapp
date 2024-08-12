@@ -1,0 +1,33 @@
+{{>header}}
+{{>navbar}}
+
+
+<body>
+    <h1>User List</h1>
+
+    {{#users}}
+    <div class="list">
+        <a href="users/{{id}}">{{name}} {{roles}}</a>
+        <button onclick="window.location.href='/users/{{id}}/upgrade';">Upgrade</button>
+        <button onclick="window.location.href='/users/{{id}}/delete';">Remove</button>
+    </div>
+    {{/users}}
+
+    {{#hasPrev}}
+    <a href="?page={{prevPage}}">Prev</a>
+    {{/hasPrev}}
+
+    {{#hasNext}}
+    <a href="?page={{nextPage}}">Next</a>
+    {{/hasNext}}
+
+    {{^users}}
+    <p>No users have been created yet.</p>
+    {{/users}}
+
+    <p>Page {{nextPage}} - {{lastPage}}</p>
+
+    <button onclick="window.location.href='/';">Go back</button>
+</body>
+
+{{>footer}}

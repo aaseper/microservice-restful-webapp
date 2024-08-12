@@ -1,0 +1,20 @@
+{{>header}}
+
+<body>
+    <form action="/login" method="post">
+        <h2>Log in</h2>
+        <label>Username:</label>
+        <input name="username" type="text"/><br/>
+        <label>Password:</label>
+        <input name="password" type="password"/><br/>
+        <br>
+        <input type="submit" value="Sign In"/>
+        <input name="_csrf" type="hidden" value="{{token}}"/>
+    </form>
+
+    <p>Not registered yet?</p>
+    <button onclick="window.location.href='/signup';">Sign up</button>
+    <button onclick="window.location.href='/';">Go home</button>
+</body>
+
+{{>footer}}

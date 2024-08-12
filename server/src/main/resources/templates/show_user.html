@@ -1,0 +1,40 @@
+{{>header}}
+{{>navbar}}
+
+<body>
+    <h2>{{user.name}} profile</h2>
+
+    <p>Maximum eoloparks that can manage:
+        {{#unlimitedParks}}Unlimited{{/unlimitedParks}}{{^unlimitedParks}}{{user.parkMax}}{{/unlimitedParks}}</p>
+    <p>Roles: {{user.roles}}</p>
+
+    <h2>Eoloparks:</h2>
+
+    {{#parks}}
+    <div class="list">
+        <a href='/parks/{{id}}'>
+            <h3>{{name}}, {{city}}</h3>
+        </a>
+    </div>
+    {{/parks}}
+
+    {{#hasPrev}}
+    <a href="?page={{prevPage}}">Prev</a>
+    {{/hasPrev}}
+
+    {{#hasNext}}
+    <a href="?page={{nextPage}}">Next</a>
+    {{/hasNext}}
+
+    {{^parks}}
+    <p>No eoloparks have been created yet.</p>
+    {{/parks}}
+
+    <p>Page {{nextPage}} - {{lastPage}}</p>
+    <br>
+    <br>
+
+    <button onclick="window.location.href='/users';">Go back</button>
+</body>
+
+{{>footer}}

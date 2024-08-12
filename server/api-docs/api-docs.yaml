@@ -1,0 +1,803 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: https://localhost:8443
+  description: Generated server url
+paths:
+  /api/users/{id}:
+    get:
+      tags:
+      - user-rest-controller
+      summary: Get user by ID
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to retrieve
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        description: Pageable object for pagination
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "403":
+          description: Access Denied
+        "200":
+          description: Return the user with the ID given
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "404":
+          description: The requested resource could not be found
+    put:
+      tags:
+      - user-rest-controller
+      summary: Update user by ID
+      operationId: putUser
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "403":
+          description: Access Denied
+        "200":
+          description: User modified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNameResponse'
+        "404":
+          description: The requested resource could not be found
+    delete:
+      tags:
+      - user-rest-controller
+      summary: Delete user by ID
+      operationId: deleteUser
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: User deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNameResponse'
+        "401":
+          description: Full authentication is required to access this resource
+        "403":
+          description: Access Denied
+        "404":
+          description: The requested resource could not be found
+  /api/parks/{id}:
+    get:
+      tags:
+      - park-rest-controller
+      summary: Get park by ID
+      operationId: getPark
+      parameters:
+      - name: id
+        in: path
+        description: ID of the park to retrieve
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "200":
+          description: Return the park with the ID given
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EoloparkResponse'
+        "403":
+          description: You are not the owner of this park
+        "404":
+          description: The requested resource could not be found
+    put:
+      tags:
+      - park-rest-controller
+      summary: Update park by ID
+      operationId: putPark
+      parameters:
+      - name: id
+        in: path
+        description: ID of the park to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: keep
+        in: query
+        description: Flag indicating whether to keep existing data
+        required: true
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EoloparkRequest'
+        required: true
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "200":
+          description: Park modified
+        "403":
+          description: You are not the owner of this park
+        "404":
+          description: The requested resource could not be found
+    delete:
+      tags:
+      - park-rest-controller
+      summary: Delete park by ID
+      operationId: deletePark
+      parameters:
+      - name: id
+        in: path
+        description: ID of the park to delete
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "200":
+          description: Park deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EoloparkIdAndNameAndCityResponse'
+        "403":
+          description: You are not the owner of this park
+        "404":
+          description: The requested resource could not be found
+  /api/parks/{eoloparkId}/aerogenerators/{aerogeneratorId}:
+    put:
+      tags:
+      - aerogenerator-rest-controller
+      summary: Update aerogenerator by ID
+      operationId: putAerogenerator
+      parameters:
+      - name: eoloparkId
+        in: path
+        description: ID of the Eolopark containing the aerogenerator to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: aerogeneratorId
+        in: path
+        description: ID of the aerogenerator to update
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AerogeneratorRequest'
+        required: true
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "201":
+          description: Aerogenerator modified
+        "404":
+          description: The requested resource could not be found
+        "403":
+          description: "You are not the owner of that park, so you can't update its\
+            \ aerogenerators"
+    delete:
+      tags:
+      - aerogenerator-rest-controller
+      summary: Delete aerogenerator by ID
+      operationId: deleteAerogenerator
+      parameters:
+      - name: eoloparkId
+        in: path
+        description: Eolopark ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: aerogeneratorId
+        in: path
+        description: Aerogenerator ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "200":
+          description: Park deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AerogeneratorResponse'
+        "403":
+          description: "You are not the owner of that aerogenerator, so you can't\
+            \ delete it"
+        "404":
+          description: The requested resource could not be found
+  /api/users/register:
+    post:
+      tags:
+      - user-rest-controller
+      summary: Create a new user
+      operationId: signin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      responses:
+        "500":
+          description: A user with the same id is already registered
+        "201":
+          description: New user created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNameResponse'
+  /api/parks/{eoloparkId}/aerogenerators:
+    post:
+      tags:
+      - aerogenerator-rest-controller
+      summary: Create a new aerogenerator manually
+      operationId: newAerogenerator
+      parameters:
+      - name: eoloparkId
+        in: path
+        description: ID of the Eolopark where the aerogenerator will be added
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AerogeneratorRequest'
+        required: true
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "400":
+          description: You have tried to create a park with an already existing id
+        "404":
+          description: The requested resource could not be found
+        "201":
+          description: New aerogenerator manually created
+        "403":
+          description: "You are not the owner of that park, so you can't create a\
+            \ new aerogenerator in it"
+  /api/parks/automated:
+    post:
+      tags:
+      - park-rest-controller
+      summary: Create new automated park with city and area
+      operationId: newAutomatedPark
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomatedRequest'
+        required: true
+      responses:
+        "201":
+          description: New automated park created
+          content:
+            application/json: {}
+        "401":
+          description: Full authentication is required to access this resource
+        "429":
+          description: You have reached the maximum allowed number of resources (5).
+            Please try again later
+  /api/parks/automated/random:
+    post:
+      tags:
+      - park-rest-controller
+      summary: Create new random park
+      operationId: newRandomPark
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "201":
+          description: New random park created
+          content:
+            application/json: {}
+        "429":
+          description: You have reached the maximum allowed number of resources (5).
+            Please try again later
+  /api/parks/:
+    get:
+      tags:
+      - park-rest-controller
+      summary: Get all parks
+      operationId: getAllParks
+      parameters:
+      - name: keyword
+        in: query
+        description: Optional keyword for filtering parks
+        required: false
+        schema:
+          type: string
+      - name: searchType
+        in: query
+        description: Optional search type
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Page information for pagination
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "200":
+          description: Return the list of paginated parks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EoloparkIdAndNameAndCityResponse'
+    post:
+      tags:
+      - park-rest-controller
+      summary: Create new park manually
+      operationId: newPark
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EoloparkRequest'
+        required: true
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "201":
+          description: New park manually created
+        "429":
+          description: You have reached the maximum allowed number of resources (5).
+            Please try again later
+        "500":
+          description: You have tried to create a park with an already existing name
+  /api/auth/refresh:
+    post:
+      tags:
+      - login-controller
+      summary: Refresh token
+      operationId: refreshToken
+      parameters:
+      - name: refreshToken
+        in: cookie
+        description: Refresh token to refresh authentication
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Token refreshed successful
+          content:
+            application/json: {}
+  /api/auth/logout:
+    post:
+      tags:
+      - login-controller
+      summary: Log out
+      operationId: logOut
+      responses:
+        "200":
+          description: Log out successful
+          content:
+            application/json: {}
+  /api/auth/login:
+    post:
+      tags:
+      - login-controller
+      summary: Log in
+      operationId: login
+      parameters:
+      - name: accessToken
+        in: cookie
+        description: Access token to fill
+        required: false
+        schema:
+          type: string
+      - name: refreshToken
+        in: cookie
+        description: Refresh token to refresh authentication
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        "200":
+          description: Log in successful
+          content:
+            application/json: {}
+  /api/users/me:
+    get:
+      tags:
+      - user-rest-controller
+      summary: Get current user
+      operationId: me
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "403":
+          description: Access Denied
+        "200":
+          description: Return the page of the logged user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNameResponse'
+  /api/users/:
+    get:
+      tags:
+      - user-rest-controller
+      summary: Get all users
+      operationId: getAllUser
+      parameters:
+      - name: page
+        in: query
+        description: Pageable object for pagination
+        required: true
+        schema:
+          $ref: '#/components/schemas/Pageable'
+      responses:
+        "200":
+          description: Return the list of user with their roles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserIdAndNameAndRolesResponse'
+        "401":
+          description: Full authentication is required to access this resource
+        "403":
+          description: Access Denied
+  /api/parks/report/{id}:
+    get:
+      tags:
+      - park-rest-controller
+      summary: Get report by ID
+      operationId: getReport
+      parameters:
+      - name: id
+        in: path
+        description: ID of the report to retrieve
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "401":
+          description: Full authentication is required to access this resource
+        "404":
+          description: The requested resource could not be found
+        "200":
+          description: Return the report with the ID given
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+components:
+  schemas:
+    UserNameResponse:
+      required:
+      - Name
+      type: object
+      properties:
+        Name:
+          type: string
+    AerogeneratorRequest:
+      required:
+      - aerogeneratorId
+      - aerogeneratorLatitude
+      - aerogeneratorLongitude
+      - aerogeneratorPower
+      - bladeLength
+      - height
+      type: object
+      properties:
+        aerogeneratorId:
+          type: string
+        aerogeneratorLatitude:
+          type: number
+          format: double
+        aerogeneratorLongitude:
+          type: number
+          format: double
+        bladeLength:
+          type: integer
+          format: int32
+        height:
+          type: integer
+          format: int32
+        aerogeneratorPower:
+          type: integer
+          format: int32
+      description: Request body containing details for creating a new aerogenerator
+    EoloparkRequest:
+      required:
+      - aerogenerator
+      - area
+      - city
+      - latitude
+      - longitude
+      - name
+      - substation
+      - terrainType
+      type: object
+      properties:
+        name:
+          type: string
+        city:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        area:
+          type: integer
+          format: int32
+        terrainType:
+          type: string
+        substation:
+          $ref: '#/components/schemas/SubstationRequest'
+        aerogenerator:
+          $ref: '#/components/schemas/AerogeneratorRequest'
+      description: Request body containing details for creating a new park
+    SubstationRequest:
+      required:
+      - model
+      - power
+      - voltage
+      type: object
+      properties:
+        model:
+          type: string
+        power:
+          type: number
+          format: double
+        voltage:
+          type: number
+          format: double
+    UserRequest:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      description: Request body containing user registration details
+    AutomatedRequest:
+      required:
+      - area
+      - city
+      type: object
+      properties:
+        city:
+          type: string
+        area:
+          type: integer
+          format: int32
+      description: Request body containing details for creating a new automated park
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      description: Request to log in (security)
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    AerogeneratorResponse:
+      required:
+      - aerogeneratorId
+      - aerogeneratorLatitude
+      - aerogeneratorLongitude
+      - aerogeneratorPower
+      - bladeLength
+      - height
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        aerogeneratorId:
+          type: string
+        aerogeneratorLatitude:
+          type: number
+          format: double
+        aerogeneratorLongitude:
+          type: number
+          format: double
+        bladeLength:
+          type: integer
+          format: int32
+        height:
+          type: integer
+          format: int32
+        aerogeneratorPower:
+          type: integer
+          format: int32
+    EoloparkResponse:
+      required:
+      - aerogenerators
+      - area
+      - city
+      - id
+      - latitude
+      - longitude
+      - name
+      - substation
+      - terrainType
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        city:
+          type: string
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+        area:
+          type: integer
+          format: int32
+        terrainType:
+          type: string
+        substation:
+          $ref: '#/components/schemas/SubstationResponse'
+        aerogenerators:
+          type: array
+          items:
+            $ref: '#/components/schemas/AerogeneratorResponse'
+    SubstationResponse:
+      required:
+      - model
+      - power
+      - voltage
+      type: object
+      properties:
+        model:
+          type: string
+        power:
+          type: number
+          format: double
+        voltage:
+          type: number
+          format: double
+    UserResponse:
+      required:
+      - id
+      - name
+      - parkMax
+      - roles
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        parkMax:
+          type: integer
+          format: int32
+        roles:
+          type: array
+          items:
+            type: string
+        eoloparks:
+          type: array
+          items:
+            $ref: '#/components/schemas/EoloparkResponse'
+    UserIdAndNameAndRolesResponse:
+      required:
+      - id
+      - name
+      - roles
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+    ReportResponse:
+      required:
+      - completed
+      - progress
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        progress:
+          type: integer
+          format: int32
+        completed:
+          type: boolean
+    EoloparkIdAndNameAndCityResponse:
+      required:
+      - city
+      - id
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        city:
+          type: string

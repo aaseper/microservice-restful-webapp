@@ -1,0 +1,16 @@
+<nav class="navbar">
+    <a href="/">Home</a>
+    <br>
+    {{#logged}}
+    <br>
+    <form action="/logout" method="post">
+        <button type="submit" value="Log Out">{{username}}, log out</button>
+        <input name="_csrf" type="hidden" value="{{token}}"/>
+    </form>
+    {{/logged}}
+    {{^logged}}
+    <button onclick="window.location.href='/login';">Log in</button>
+    <button onclick="window.location.href='/signup';">Sign up</button>
+    {{/logged}}
+</nav>
+<hr>

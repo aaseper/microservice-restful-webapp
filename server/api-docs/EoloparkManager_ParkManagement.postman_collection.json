@@ -1,0 +1,379 @@
+{
+	"info": {
+		"_postman_id": "429dc8d4-5590-4987-aaf2-7e4b99fbe7ce",
+		"name": "EoloparkManager_ParkManagement",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32641687",
+		"_collection_link": "https://eoloparkmanager.postman.co/workspace/Team-Workspace~372ef3dd-92f6-4160-87a6-447fb3f61427/collection/26437735-429dc8d4-5590-4987-aaf2-7e4b99fbe7ce?action=share&source=collection_link&creator=32641687"
+	},
+	"item": [
+		{
+			"name": "Get all parks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/parks/?keyword=la&searchType=ALL&page=0&size=5",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						""
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "la"
+						},
+						{
+							"key": "searchType",
+							"value": "ALL"
+						},
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get park id = 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var template = `",
+							"<style type=\"text/css\">",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}",
+							"    .tftable tr {background-color:#ffffff;}",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}",
+							"    .tftable tr:hover {background-color:#e0ffff;}",
+							"</style>",
+							"",
+							"<table class=\"tftable\" border=\"1\">",
+							"    <tr>",
+							"        <th>ID</th>",
+							"        <th>Name</th>",
+							"        <th>City</th>",
+							"        <th>Latitude</th>",
+							"        <th>Longitude</th>",
+							"        <th>Area</th>",
+							"        <th>Terrain Type</th>",
+							"        <th>Substation ID</th>",
+							"        <th>Substation Model</th>",
+							"        <th>Substation Power</th>",
+							"        <th>Substation Voltage</th>",
+							"    </tr>",
+							"    <tr>",
+							"        <td>{{response.id}}</td>",
+							"        <td>{{response.name}}</td>",
+							"        <td>{{response.city}}</td>",
+							"        <td>{{response.latitude}}</td>",
+							"        <td>{{response.longitude}}</td>",
+							"        <td>{{response.area}}</td>",
+							"        <td>{{response.terrainType}}</td>",
+							"        <td>{{response.substation.id}}</td>",
+							"        <td>{{response.substation.model}}</td>",
+							"        <td>{{response.substation.power}}</td>",
+							"        <td>{{response.substation.voltage}}</td>",
+							"    </tr>",
+							"</table>",
+							"`;",
+							"",
+							"function constructVisualizerPayload() {",
+							"    return {response: pm.response.json()}",
+							"}",
+							"",
+							"pm.visualizer.set(template, constructVisualizerPayload());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/parks/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post new park manually",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ExamplePark\",\r\n    \"city\": \"ExampleCity\",\r\n    \"latitude\": 100.0,\r\n    \"longitude\": 50.05,\r\n    \"area\": 2,\r\n    \"terrainType\": \"MOUNTAIN\",\r\n    \"substation\": {\r\n        \"model\": \"ExampleSubstation\",\r\n        \"power\": 2000.0,\r\n        \"voltage\": 200.0\r\n    },\r\n    \"aerogenerator\": {\r\n        \"aerogeneratorId\": \"0\",\r\n        \"aerogeneratorLatitude\": 99.99,\r\n        \"aerogeneratorLongitude\": 50.06,\r\n        \"bladeLength\": 10.0,\r\n        \"height\": 25,\r\n        \"aerogeneratorPower\": 1500.0\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/parks/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post new automated park",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"city\":\"Barcelona\", \"area\":5 }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/parks/automated",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						"automated"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post new random park",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/parks/automated/random",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						"automated",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update park id = 1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"ModifiedPark\",\r\n    \"city\": \"ModifiedCity\",\r\n    \"latitude\": 160.0,\r\n    \"longitude\": 60.12,\r\n    \"area\": 3,\r\n    \"terrainType\": \"FOREST\",\r\n    \"substation\": {\r\n        \"model\": \"ModifiedSubstation\",\r\n        \"power\": 2500.0,\r\n        \"voltage\": 300.0\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/parks/1?keep=true",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						"1"
+					],
+					"query": [
+						{
+							"key": "keep",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete park id = 2",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/parks/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post new aerogenerator for park id = 1",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"aerogeneratorId\": \"ExampleAerogenerator\",\r\n    \"aerogeneratorLatitude\": 100,\r\n    \"aerogeneratorLongitude\": 32.45,\r\n    \"bladeLength\": 12.0,\r\n    \"height\": 36,\r\n    \"aerogeneratorPower\": 2000.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/parks/1/aerogenerators",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						"1",
+						"aerogenerators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update aerogenerator = 1 from park id = 1",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"aerogeneratorId\": \"NewExampleAerogenerator\",\r\n    \"aerogeneratorLatitude\": 100,\r\n    \"aerogeneratorLongitude\": 32.45,\r\n    \"bladeLength\": 12.0,\r\n    \"height\": 36,\r\n    \"aerogeneratorPower\": 2000.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/parks/1/aerogenerators/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						"1",
+						"aerogenerators",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete aerogenerator = 1 from park id = 1",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/parks/1/aerogenerators/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						"1",
+						"aerogenerators",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get report id = 2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/parks/report/2",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"parks",
+						"report",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:8443"
+		}
+	]
+}

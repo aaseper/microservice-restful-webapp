@@ -1,0 +1,24 @@
+{{>header}}
+
+<body>
+    <form action="/signup" method="post">
+        <h2>User register form</h2>
+        <label for="name">Username:</label>
+        <input id="name" name="name" required type="text"/>
+        <label for="encodedPassword">Password:</label>
+        <input id="encodedPassword" name="encodedPassword" required type="password"/>
+        <label for="parkMax"></label>
+        <input id="parkMax" name="parkMax" type="hidden" value="5"/>
+        <label for="roles"></label>
+        <input id="roles" name="roles" type="hidden" value="user"/>
+        <br>
+        <input type="submit" value="Save"/>
+        <input name="_csrf" type="hidden" value="{{token}}"/>
+    </form>
+
+    <p>Already have an account?</p>
+    <button onclick="window.location.href='/login';">Log in</button>
+    <button onclick="window.location.href='/';">Go home</button>
+</body>
+
+{{>footer}}

@@ -1,0 +1,25 @@
+{{>header}}
+{{>navbar}}
+
+<body>
+    <form action="/user/{{user.id}}/edit" method="post">
+        <h2>User modification form</h2>
+        <label for="name">Name:</label>
+        <input id="name" name="name" required type="text" value="{{user.name}}"/>
+        <label for="roles">Role:</label>
+        <select id="roles" name="roles" required>
+            <option value="admin">ADMIN</option>
+            <option value="user">USER</option>
+            <option value="premium">PREMIUM</option>
+        </select>
+
+        <input type="submit" value="Save"/>
+        <input name="_csrf" type="hidden" value="{{token}}"/>
+    </form>
+    <br>
+    <br>
+
+    <button onclick="window.location.href='/user/{{user.id}}';">Go back</button>
+</body>
+
+{{>footer}}

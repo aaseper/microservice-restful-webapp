@@ -1,0 +1,50 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8008
+    description: Generated server url
+paths:
+  /api/geoservice/:
+    get:
+      tags:
+        - geo-service-rest-controller
+      summary: "Get city's latitude, longitude and altitude data"
+      operationId: getCityAttributes
+      parameters:
+        - name: cityName
+          in: query
+          description: City whose data is wanted to be shown
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Return the city data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeoServiceResponse'
+        "404":
+          description: City not found
+        "400":
+          description: City name not provided (is required)
+components:
+  schemas:
+    GeoServiceResponse:
+      required:
+        - altitude
+        - latETRS89
+        - lonETRS89
+      type: object
+      properties:
+        latETRS89:
+          type: number
+          format: double
+        lonETRS89:
+          type: number
+          format: double
+        altitude:
+          type: integer
+          format: int32

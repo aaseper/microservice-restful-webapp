@@ -1,0 +1,14 @@
+version: '3'
+services:
+  planner:
+    image: ${IMAGE_USERNAME}/planner:${IMAGE_VERSION}
+    container_name: planner
+    environment:
+      - spring.rabbitmq.host=${IP_ADDRESS_RABBITMQ}
+      - rest.client.geoService.address=${IP_ADDRESS_GEOSERVICE}
+      - grpc.client.windServer.address=static://${IP_ADDRESS_WINDSERVICE}
+    command: ./wait-for-it.sh ${IP_ADDRESS_RABBITMQ}:5672 --
+             ./wait-for-it.sh ${IP_ADDRESS_GEOSERVICE} --
+             ./wait-for-it.sh ${IP_ADDRESS_WINDSERVICE} --
+             java -jar planner-0.2.0.jar
+name: 'planner'

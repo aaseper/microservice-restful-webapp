@@ -1,0 +1,13 @@
+version: '3'
+services:
+  windservice:
+    image: ${IMAGE_USERNAME}/windservice:${IMAGE_VERSION}
+    container_name: windservice
+    ports:
+      - "9090:9090"
+  geoservice:
+    image: ${IMAGE_USERNAME}/geoservice:${IMAGE_VERSION}
+    container_name: geoservice
+    ports:
+      - "8008:8008"
+name: 'geo-wind'

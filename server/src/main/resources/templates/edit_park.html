@@ -1,0 +1,49 @@
+{{>header}}
+{{>navbar}}
+
+<body>
+    <form action="/parks/{{park.id}}/edit" method="post">
+        <h2>Eolopark modification form</h2>
+        <label for="name">Name:</label>
+        <input id="name" name="name" required type="text" value="{{park.name}}"/>
+        <label for="city">City:</label>
+        <input id="city" name="city" required type="text" value="{{park.city}}"/>
+        <label for="latitude">Latitude:</label>
+        <input id="latitude" name="latitude" required step="0.01" type="number" value="{{park.latitude}}"/>
+        <label for="longitude">Longitude:</label>
+        <input id="longitude" name="longitude" required step="0.01" type="number" value="{{park.longitude}}"/>
+        <label for="area">Area:</label>
+        <input id="area" name="area" required step="1" type="number" value="{{park.area}}"/>
+        <label for="terrainType">Terrain Type:</label>
+        <select id="terrainType" name="terrainType" required>
+            <option value="PLAIN">PLAIN</option>
+            <option value="DESERT">DESERT</option>
+            <option value="FOREST">FOREST</option>
+            <option value="HILL">HILL</option>
+            <option value="MOUNTAIN">MOUNTAIN</option>
+        </select>
+
+        <h3>Substation</h3>
+        <label for="model">Model:</label>
+        <input id="model" name="model" required type="text" value="{{park.substation.model}}"/>
+        <label for="power">Power:</label>
+        <input id="power" name="power" required step="0.01" type="number" value="{{park.substation.power}}"/>
+        <label for="voltage">Voltage:</label>
+        <input id="voltage" name="voltage" required step="0.01" type="number" value="{{park.substation.voltage}}"/>
+
+        <h3>Keep aerogenerators?</h3>
+        <select name="keep" required>
+            <option value="yes">Keep: do not delete its aerogenerators</option>
+            <option value="no">Delete: delete all its aerogenerators</option>
+        </select>
+
+        <input type="submit" value="Save"/>
+        <input name="_csrf" type="hidden" value="{{token}}"/>
+    </form>
+    <br>
+    <br>
+
+    <button onclick="window.location.href='/parks/{{park.id}}';">Go back</button>
+</body>
+
+{{>footer}}

@@ -1,0 +1,73 @@
+{{>header}}
+{{>navbar}}
+
+
+<body>
+    <h1>Eolopark Manager</h1>
+
+    <h2>Available eoloparks</h2>
+
+    {{#logged}}
+    <form action="/" method="post">
+        <input name="keyword" placeholder="Search by..." type="text"/>
+        <select name="searchType" required>
+            <option value="ALL">Across: All eoloparks</option>
+            <option value="OWN">My eoloparks: Only my eoloparks</option>
+        </select>
+        <input type="submit" value="Search"/>
+        <input name="_csrf" type="hidden" value="{{token}}"/>
+    </form>
+
+    <p><small>Searching by keyword:
+        {{#searchByKeyword}}{{keyword}}{{/searchByKeyword}}{{^searchByKeyword}}Any{{/searchByKeyword}}, type:
+        {{searchType}}</small></p>
+    {{/logged}}
+
+    {{#parks}}
+    <div class="list">
+        <a href="parks/{{id}}">
+            <h3>{{name}}, {{city}}</h3>
+        </a>
+    </div>
+    {{/parks}}
+
+    {{#hasPrev}}
+    <a href="/?keyword={{keyword}}&searchType={{searchType}}&page={{prevPage}}">Prev</a>
+    {{/hasPrev}}
+
+    {{#hasNext}}
+    <a href="/?keyword={{keyword}}&searchType={{searchType}}&page={{nextPage}}">Next</a>
+    {{/hasNext}}
+
+    {{^parks}}
+    <p>No eoloparks have been created yet.</p>
+    {{/parks}}
+
+    <p>Page {{nextPage}} - {{lastPage}}</p>
+
+    {{#logged}}
+    <h2>Actions</h2>
+
+    <a href="parks/new">Eolopark manual creation</a>
+    <br>
+    <br>
+    <a href="parks/automate">Eolopark automated generation</a>
+    <br>
+    <br>
+    <form action="/parks/automate/random" method="post"> <!-- Debugging -->
+        <input type="submit" value="Eolopark random generation">
+        <input name="_csrf" type="hidden" value="{{token}}"/>
+    </form>
+
+    {{#admin}}
+    <h2>User management</h2>
+
+    <a href="/users">Review registered accounts</a>
+    <br>
+    <br>
+    {{/admin}}
+    {{/logged}}
+
+</body>
+
+{{>footer}}

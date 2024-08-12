@@ -1,0 +1,57 @@
+version: '3'
+services:
+  server:
+    image: ${IMAGE_USERNAME}/server:${IMAGE_VERSION}
+    container_name: server
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+  planner:
+    image: ${IMAGE_USERNAME}/planner:${IMAGE_VERSION}
+    container_name: planner
+    depends_on:
+      - rabbitmq
+      - windservice
+      - geoservice
+    command: [ "./wait-for-it.sh", "windservice:9090", "--",
+               "./wait-for-it.sh", "geoservice:8008", "--",
+               "./wait-for-it.sh", "rabbitmq:5672", "--",
+               "java", "-jar", "planner-0.2.0.jar" ]
+  windservice:
+    image: ${IMAGE_USERNAME}/windservice:${IMAGE_VERSION}
+    container_name: windservice
+  geoservice:
+    image: ${IMAGE_USERNAME}/geoservice:${IMAGE_VERSION}
+    container_name: geoservice
+  mysql:
+    image: mysql:8.0-debian
+    container_name: database
+    volumes:
+      - ./db-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_DATABASE=${DB_NAME}
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping',
+             '-h', 'localhost', '-u$$MYSQL_USER', '-p$$MYSQL_ROOT_PASSWORD' ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  rabbitmq:
+    image: rabbitmq:3.9.11-management-alpine
+    container_name: broker
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  db-data:
+name: 'eoloparkmanager'
